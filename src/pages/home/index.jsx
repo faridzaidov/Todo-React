@@ -1,5 +1,5 @@
 import React from 'react'
-import Table from '../../ui/table'
+import Table from './components/table'
 import './style.scss'
 
 const Home = () => {
