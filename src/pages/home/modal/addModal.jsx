@@ -1,33 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { Modal, Input } from 'antd';
-import { useState } from 'react';
+import { fetchAddTodo, selectPosts } from '../../../store/posts';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 const initialState = {
-    name: '',
-    age: '',
-    address: '',
-}
-const AddModal = ({ addModalOpen, setAddModalOpen, setDataSource }) => {
+    id: '',
+    title: '',
+    body: '',
+};
 
+const AddModal = ({ addModalOpen, setAddModalOpen }) => {
+    const dispatch = useDispatch();
     const [formData, setFormData] = useState(initialState);
-
+    const { isCreating } = useSelector(selectPosts);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const handleAdd = () => {
+    const handleAdd = async () => {
         const newData = {
             id: new Date().getTime(),
-            name: formData.name,
-            age: formData.age,
-            address: formData.address,
+            // name: formData.name,
+            title: formData.title,
+            body: formData.body,
+            isCompleted: true
         };
-        setDataSource(prev => [...prev, newData]);
-        setAddModalOpen(false);
-    };
 
-    
-    // prevv//////
+        dispatch(fetchAddTodo(newData))
+            .unwrap()
+            .then(() => setAddModalOpen(false))
+            .catch((err) => console.log(err));
+    };
 
 
     return (
@@ -35,25 +39,26 @@ const AddModal = ({ addModalOpen, setAddModalOpen, setDataSource }) => {
             open={addModalOpen}
             title='Add row'
             onOk={handleAdd}
+            confirmLoading={isCreating}
             onCancel={() => setAddModalOpen(false)}
             afterClose={() => setFormData(initialState)}
         >
             <form>
-                <label>
+                {/* <label>
                     <Input placeholder='Name' type="text" name="name" value={formData.name} onChange={handleInputChange} />
+                </label> */}
+                <br />
+                <label>
+                    <Input placeholder='Title' type="text" name="title" value={formData.title} onChange={handleInputChange} />
                 </label>
                 <br />
                 <label>
-                    <Input placeholder='Age' type="text" name="age" value={formData.age} onChange={handleInputChange} />
-                </label>
-                <br />
-                <label>
-                    <Input placeholder='Address' type="text" name="address" value={formData.address} onChange={handleInputChange} />
+                    <Input placeholder='Body' type="text" name="body" value={formData.body} onChange={handleInputChange} />
                 </label>
                 <br />
             </form>
         </Modal>
-    )
-}
+    );
+};
 
-export default AddModal
+export default AddModal;

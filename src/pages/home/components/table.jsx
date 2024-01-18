@@ -1,40 +1,37 @@
-import { useState } from 'react';
-import { Button, Popconfirm, Table as T, Modal, Input } from 'antd';
+import { Button, Popconfirm, Table as T, Pagination } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import AddModal from '../modal/addModal';
 import EditModal from '../modal/editModal';
-
-
+import { fetchTodoData, selectPosts } from '../../../store/posts';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDeleteTodo } from '../../../store/posts';
 
 const Table = () => {
     const [addModalOpen, setAddModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
-    // const [formData, setFormData] = useState(initialState);
-
-    const [dataSource, setDataSource] = useState([
-        {
-            id: '0',
-            name: 'Edward King 0',
-            age: '32',
-            address: 'London, Park Lane no. 0',
-        },
-        {
-            id: '1',
-            name: 'Edward King 1',
-            age: '32',
-            address: 'London, Park Lane no. 1',
-        },
-    ]);
-
-
-
+    const [{ current, limit }, setPagination] = useState({
+        page: 1,
+        limit: 10
+    });
+    const dispatch = useDispatch();
+    const { posts = [], isGetting } = useSelector(selectPosts);
 
 
     const handleDelete = (id) => {
-        const newData = dataSource.filter((item) => item.id !== id);
-        setDataSource(newData);
+        dispatch(fetchDeleteTodo(id));
     };
 
+    const handlePageChange = (page, limit) => {
+        setPagination({
+            current: page,
+            limit
+        });
+    };
+
+    useEffect(() => {
+        dispatch(fetchTodoData({ page: current, limit: limit }));
+    }, [current, limit, dispatch]);
 
 
     return (
@@ -52,21 +49,27 @@ const Table = () => {
                 rowClassName='editable-row'
                 bordered
                 rowKey='id'
-                dataSource={dataSource}
+                loading={isGetting}
+                dataSource={posts}
+                pagination={{
+                    current,
+                    onChange: handlePageChange,
+                    total: 200,
+                    limit: limit,
+                }}
                 columns={[
                     {
-                        title: 'name',
-                        dataIndex: 'name',
-                        width: '30%',
+                        title: 'ID',
+                        dataIndex: 'id',
                         editable: true,
                     },
                     {
-                        title: 'age',
-                        dataIndex: 'age',
+                        title: 'Title',
+                        dataIndex: 'title',
                     },
                     {
-                        title: 'address',
-                        dataIndex: 'address',
+                        title: 'Body',
+                        dataIndex: 'body',
                     },
                     {
                         title: 'operation',
@@ -75,15 +78,18 @@ const Table = () => {
                             return (
                                 <>
                                     <EditOutlined onClick={() => setEditModalOpen(record.id)} />
-                                    <DeleteOutlined style={{ color: "red", marginLeft: 12 }} onClick={() => handleDelete(record.id)} />
+                                    <Popconfirm title="Delete?" onConfirm={() => handleDelete(record.id)}>
+                                        <DeleteOutlined style={{ color: "red", marginLeft: 12 }} />
+                                    </Popconfirm>
+
                                 </>
                             )
                         }
                     },
                 ]}
             />
-            <AddModal setAddModalOpen={setAddModalOpen} addModalOpen={addModalOpen} setDataSource={setDataSource}/>
-            <EditModal editModalOpen={editModalOpen} setEditModalOpen={setEditModalOpen} dataSource={dataSource} setDataSource={setDataSource} />
+            <AddModal setAddModalOpen={setAddModalOpen} addModalOpen={addModalOpen} />
+            <EditModal editModalOpen={editModalOpen} setEditModalOpen={setEditModalOpen} />
         </div>
     );
 };

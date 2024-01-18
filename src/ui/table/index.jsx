@@ -6,4 +6,4 @@ const Table = () => {
   )
 }
 
-export default index
+export default Table
