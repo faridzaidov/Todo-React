@@ -2,10 +2,10 @@ import { Button, Popconfirm, Table as T, Pagination } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import AddModal from '../modal/addModal';
 import EditModal from '../modal/editModal';
-import { fetchTodoData, selectPosts } from '../../../store/posts';
+import { fetchTodoData, selectPosts } from '../store/posts';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDeleteTodo } from '../../../store/posts';
+import { fetchDeleteTodo } from '../store/posts';
 
 const Table = () => {
     const [addModalOpen, setAddModalOpen] = useState(false);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Input } from 'antd';
-import { fetchAddTodo, selectPosts } from '../../../store/posts';
+import { fetchAddTodo, selectPosts } from '../store/posts';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 const initialState = {
@@ -44,9 +44,6 @@ const AddModal = ({ addModalOpen, setAddModalOpen }) => {
             afterClose={() => setFormData(initialState)}
         >
             <form>
-                {/* <label>
-                    <Input placeholder='Name' type="text" name="name" value={formData.name} onChange={handleInputChange} />
-                </label> */}
                 <br />
                 <label>
                     <Input placeholder='Title' type="text" name="title" value={formData.title} onChange={handleInputChange} />

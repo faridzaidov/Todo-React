@@ -2,13 +2,13 @@ import { Modal, Input } from 'antd'
 import React from 'react'
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { editTodo, fetchEditTodo, selectPosts } from '../../../store/posts';
-// import { isUpdating } from '../../../store/posts';
+import { editTodo, fetchEditTodo, selectPosts } from '../store/posts';
 const initialState = {
     id: '',
     title: '',
     body: '',
 }
+
 const EditModal = ({ editModalOpen, setEditModalOpen }) => {
     const [formData, setFormData] = useState(initialState);
     const dispatch = useDispatch();
@@ -52,9 +52,6 @@ const EditModal = ({ editModalOpen, setEditModalOpen }) => {
             }}
         >
             <form>
-                {/* <label>
-                    <Input placeholder='Name' type="text" name="name" value={formData.name} onChange={handleInputChange} />
-                </label> */}
                 <br />
                 <label>
                     <Input placeholder='Title' type="text" name="title" value={formData.title} onChange={handleInputChange} />

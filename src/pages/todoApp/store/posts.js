@@ -1,4 +1,4 @@
-import createSlice from './buildCreateSlice';
+import createSlice from '../../../store/buildCreateSlice';
 import axios from 'axios';
 
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com/posts';
