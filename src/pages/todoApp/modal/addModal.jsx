@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Modal, Input } from 'antd';
-import { fetchAddTodo, selectPosts } from '../store/posts';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { fetchAddTodo, fetchTodoData, selectPosts } from '../store/posts';
+import { useSelector, useDispatch } from 'react-redux';
 const initialState = {
-    id: '',
-    title: '',
-    body: '',
+    name: '',
+    surname: '',
+    dateOfBirth: '2003-12-08',
+    patronymic: '',
 };
 
 const AddModal = ({ addModalOpen, setAddModalOpen }) => {
@@ -20,11 +20,10 @@ const AddModal = ({ addModalOpen, setAddModalOpen }) => {
 
     const handleAdd = async () => {
         const newData = {
-            id: new Date().getTime(),
-            // name: formData.name,
-            title: formData.title,
-            body: formData.body,
-            isCompleted: true
+            name: formData.name,
+            surname: formData.surname,
+            dateOfBirth: formData.dateOfBirth,
+            patronymic: formData.patronymic,
         };
 
         dispatch(fetchAddTodo(newData))
@@ -41,16 +40,24 @@ const AddModal = ({ addModalOpen, setAddModalOpen }) => {
             onOk={handleAdd}
             confirmLoading={isCreating}
             onCancel={() => setAddModalOpen(false)}
-            afterClose={() => setFormData(initialState)}
+            afterClose={() => dispatch(fetchTodoData()).then(() => setFormData(initialState))}
         >
             <form>
                 <br />
                 <label>
-                    <Input placeholder='Title' type="text" name="title" value={formData.title} onChange={handleInputChange} />
+                    <Input placeholder='Name' type="text" name="name" value={formData.name} onChange={handleInputChange} />
                 </label>
                 <br />
                 <label>
-                    <Input placeholder='Body' type="text" name="body" value={formData.body} onChange={handleInputChange} />
+                    <Input placeholder='Surname' type="text" name="surname" value={formData.surname} onChange={handleInputChange} />
+                </label>
+                <br />
+                <label>
+                    <Input placeholder='Birthday' type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleInputChange} />
+                </label>
+                <br />
+                <label>
+                    <Input placeholder='Patronymic' type="text" name="patronymic" value={formData.patronymic} onChange={handleInputChange} />
                 </label>
                 <br />
             </form>

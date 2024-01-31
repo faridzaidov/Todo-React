@@ -1,15 +1,16 @@
 import { Modal, Input } from 'antd'
-import React from 'react'
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { editTodo, fetchEditTodo, selectPosts } from '../store/posts';
+import { editTodo, fetchAddPhoto, fetchEditTodo, selectPosts } from '../store/posts';
 const initialState = {
-    id: '',
-    title: '',
-    body: '',
+    name: '',
+    surname: '',
+    dateOfBirth: '',
+    patronymic: '',
 }
 
 const EditModal = ({ editModalOpen, setEditModalOpen }) => {
+    const inputRef = useRef(null);
     const [formData, setFormData] = useState(initialState);
     const dispatch = useDispatch();
     const { posts, isUpdating } = useSelector(selectPosts);
@@ -18,15 +19,18 @@ const EditModal = ({ editModalOpen, setEditModalOpen }) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
+    const handleFotoAdd = (e) => {
+        const file = e.target.files[0];
+        dispatch(fetchAddPhoto({ id: editModalOpen, picture: file }));
+        inputRef.current.value = '';
+    }
 
     const handleEdit = () => {
         const updatedData = {
             id: editModalOpen,
             updatedTodo: formData
         }
-
         const findedData = posts.find(item => item.id === editModalOpen)?.isCompleted ?? false;
-
         if (!findedData) {
             dispatch(fetchEditTodo(updatedData))
                 .unwrap()
@@ -52,15 +56,27 @@ const EditModal = ({ editModalOpen, setEditModalOpen }) => {
             }}
         >
             <form>
-                <br />
                 <label>
-                    <Input placeholder='Title' type="text" name="title" value={formData.title} onChange={handleInputChange} />
+                    <Input ref={inputRef} placeholder='Picture' type="file" name="picture" multiple={false} onChange={handleFotoAdd} />
                 </label>
                 <br />
                 <label>
-                    <Input placeholder='Body' type="text" name="body" value={formData.body} onChange={handleInputChange} />
+                    <Input placeholder='Name' type="text" name="name" value={formData.name} onChange={handleInputChange} />
                 </label>
                 <br />
+                <label>
+                    <Input placeholder='Surname' type="text" name="surname" value={formData.surname} onChange={handleInputChange} />
+                </label>
+                <br />
+                <label>
+                    <Input placeholder='Birthday' type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleInputChange} />
+                </label>
+                <br />
+                <label>
+                    <Input placeholder='Patronymic' type="text" name="patronymic" value={formData.patronymic} onChange={handleInputChange} />
+                </label>
+                <br />
+
             </form>
         </Modal>
     )

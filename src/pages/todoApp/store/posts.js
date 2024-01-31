@@ -1,12 +1,12 @@
 import createSlice from '../../../store/buildCreateSlice';
-import axios from 'axios';
-
-axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com/posts';
+import axios from '../../../store/axios';
+import { serialize } from 'object-to-formdata';
 
 const postsSlice = createSlice({
     name: 'posts',
     initialState: {
         posts: [],
+        pagination: null,
         status: 'idle',
         error: null,
         isCreating: false,
@@ -27,31 +27,34 @@ const postsSlice = createSlice({
                 existingTodo.body = updatedTodo.body
             }
         }),
-        fetchTodoData: create.asyncThunk(async ({ page, limit }) => {
+        fetchTodoData: create.asyncThunk(async ({ page, limit }, thunkApi) => {
             try {
-                const response = await axios.get('/', {
+                const response = await axios.get('/employees', {
                     params: {
-                        _page: page,
-                        _limit: limit,
+                        page,
+                        limit,
                     }
                 });
                 return response.data;
-            } catch (error) {
-                throw error;
+            } catch (err) {
+                throw thunkApi.rejectWithValue({
+                    error: 'Oh no, not again!',
+                })
             }
         }, {
             pending: state => {
                 state.isGetting = true;
             },
-            fulfilled: (state, action) => {
-                state.posts = action.payload;
+            fulfilled: (state, { payload: { data, ...rest } }) => {
+                state.posts = data;
+                state.pagination = rest;
             },
             settled: state => {
                 state.isGetting = false;
             }
         }),
         fetchEditTodo: create.asyncThunk(async ({ id, updatedTodo }) => {
-            const response = await axios.put(`/${id}`, updatedTodo);
+            const response = await axios.put(`/employees/${id}/edit`, updatedTodo);
             return { id, updatedTodo: response.data };
         }, {
             pending: state => {
@@ -73,22 +76,44 @@ const postsSlice = createSlice({
                 state.isUpdating = false;
             }
         }),
-        fetchAddTodo: create.asyncThunk(async (newTodo) => {
-            const response = await axios.post('/', newTodo);
-            return response.data;
+        fetchAddTodo: create.asyncThunk(async (newTodo, thunkApi) => {
+            try {
+                await axios.post('/employees/add', newTodo);
+            } catch (err) {
+                throw thunkApi.rejectWithValue({
+                    error: 'Oh no, not again!',
+                })
+            }
         }, {
             pending: state => {
                 state.isCreating = true;
             },
             fulfilled: (state, action) => {
-                state.posts.unshift(action.payload);
+                // state.posts.unshift(action.payload);
+            },
+            settled: state => {
+                state.isCreating = false;
+            }
+        }),
+        fetchAddPhoto: create.asyncThunk(async ({ id, picture }, { dispatch }) => {
+            await axios.patch(`/employees/${id}/picture`, serialize({
+                picture
+            }));
+            // return response.data;
+            dispatch(fetchTodoData())
+        }, {
+            pending: state => {
+                state.isCreating = true;
+            },
+            fulfilled: (state, action) => {
+                // state.posts.unshift(action.payload);
             },
             settled: state => {
                 state.isCreating = false;
             }
         }),
         fetchDeleteTodo: create.asyncThunk(async (id) => {
-            await axios.delete(`/${id}`);
+            await axios.delete(`/employees/${id}/delete`);
             return id;
         }, {
             pending: state => {
@@ -106,7 +131,7 @@ const postsSlice = createSlice({
     }),
 });
 
-export const { editTodo, fetchEditTodo, fetchAddTodo, fetchTodoData, fetchDeleteTodo } = postsSlice.actions;
+export const { editTodo, fetchAddPhoto, fetchEditTodo, fetchAddTodo, fetchTodoData, fetchDeleteTodo } = postsSlice.actions;
 export const { selectPosts } = postsSlice.selectors;
 
 export default postsSlice.reducer;

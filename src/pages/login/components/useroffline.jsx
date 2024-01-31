@@ -1,9 +1,10 @@
 // PrivateRoute.js
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
+import Utils from '../../../common/utils';
 
 const UserOffline = ({ children }) => {
-  const isLoggedIn = localStorage.getItem('username');
+  const isLoggedIn = Utils.getAccessToken();
 
   if (!!isLoggedIn) {
     return <Navigate to='/' replace />
