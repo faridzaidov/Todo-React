@@ -1,16 +1,13 @@
-import { useRef, useState } from 'react'
-import { Modal, Input, Button } from 'antd'
+import { Modal, Button, Flex, Avatar } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectUser, updateUserPhoto } from '../../../store/user'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { updateUser } from '../../../store/user'
 import { useForm } from "react-hook-form"
 import FormInput from '../../../components/form-input'
-import { Flex } from 'antd'
 import validationSchema from '../store/validation'
-
 import { useDropzone } from 'react-dropzone';
-import { Avatar } from 'antd'
+
 
 const EditUser = ({ setUserEditOpen, userEditOpen }) => {
     const dispatch = useDispatch();
@@ -37,7 +34,8 @@ const EditUser = ({ setUserEditOpen, userEditOpen }) => {
         noKeyboard: true,
         multiple: false,
         disabled: false,
-    })
+    });
+
 
 
     const onSubmit = (validateValues) => {
@@ -74,7 +72,7 @@ const EditUser = ({ setUserEditOpen, userEditOpen }) => {
                         </Avatar>
                         <Button
                             size="small"
-                            style={{ margin: '0 16px', verticalAlign: 'middle' }}
+                            style={{ margin: '0 16px', verticalAlign: 'middle', position: "absolute" }}
                             onClick={open}
                         >
                             Upload

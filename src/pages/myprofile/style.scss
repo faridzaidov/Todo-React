@@ -3,6 +3,34 @@
     display: flex;
     overflow: hidden;
     height: 200px;
+    .coverButton {
+      display: none;
+      transform: translate(40%, 44%);
+    }
+    .coverBackgroung {
+      display: none;
+    }
+    &:hover .coverBackgroung {
+      content: "";
+      position: absolute;
+      width: 100%;
+      background-color: black;
+      height: 81%;
+      opacity: 50%;
+      display: block;
+      z-index: 1;
+    }
+    &:hover .coverButton {
+      display: block;
+      z-index: 2;
+      background: none;
+      border: none;
+      position: absolute;
+      width: 100px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -100%);
+    }
   }
   .profil_picture {
     border: 2px solid black;
@@ -23,4 +51,3 @@
     box-shadow: none;
   }
 }
- 

@@ -70,11 +70,25 @@ const userSlice = createSlice({
                 state.isCreating = false;
             }
         }),
+        updateCoverPhoto: create.asyncThunk(async (body, thinkApi) => {
+            await axios.patch("/user/cover", serialize(body));
+            return body;
+        }, {
+            pending: state => {
+                state.isCreating = true;
+            },
+            fulfilled: (state, action) => {
+                state.user.coverPath = URL.createObjectURL(action.payload.picture);
+            },
+            settled: state => {
+                state.isCreating = false;
+            }
+        }),
 
     }),
 });
 
-export const { getUserInfo, editUser, updateUser, updateUserPhoto, logOut, setLogged } = userSlice.actions;
+export const { getUserInfo, editUser, updateUser, updateUserPhoto, logOut, setLogged, updateCoverPhoto } = userSlice.actions;
 export const { selectUser } = userSlice.selectors;
 
 export default userSlice.reducer;
