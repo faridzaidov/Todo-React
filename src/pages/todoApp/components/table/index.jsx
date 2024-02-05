@@ -5,7 +5,6 @@ import EditModal from '../../modal/editModal';
 import { fetchTodoData, selectPosts, fetchDeleteTodo } from '../../store/posts';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import './style.scss';
 import { useSearchParams } from 'react-router-dom';
 
@@ -18,14 +17,14 @@ const Table = () => {
 
     const dispatch = useDispatch();
     const { posts = [], pagination, isGetting } = useSelector(selectPosts);
-    
+
     const handleDelete = (id) => {
         dispatch(fetchDeleteTodo(id));
     };
 
     const handlePageChange = (page, pageSize) => {
         setSearchParams(prev => {
-            if (page === 1 && pageSize=== 10) {
+            if (page === 1 && pageSize === 10) {
                 prev.delete('page');
                 prev.delete('limit')
             } else {

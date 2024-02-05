@@ -89,7 +89,7 @@ const postsSlice = createSlice({
                 state.isCreating = true;
             },
             fulfilled: (state, action) => {
-                // state.posts.unshift(action.payload);
+                state.posts.unshift(action.payload);
             },
             settled: state => {
                 state.isCreating = false;
@@ -129,6 +129,11 @@ const postsSlice = createSlice({
 
         })
     }),
+    extraReducers: (builder) => {
+        builder.addCase(fetchAddTodo.fulfilled, (state, action)=>{
+            dispatch(fetchTodoData)
+        })
+    }
 });
 
 export const { editTodo, fetchAddPhoto, fetchEditTodo, fetchAddTodo, fetchTodoData, fetchDeleteTodo } = postsSlice.actions;

@@ -26,10 +26,13 @@ const AddModal = ({ addModalOpen, setAddModalOpen }) => {
             patronymic: formData.patronymic,
         };
 
-        dispatch(fetchAddTodo(newData))
-            .unwrap()
-            .then(() => setAddModalOpen(false))
-            .catch((err) => console.log(err));
+        try {
+            await dispatch(fetchAddTodo(newData)).unwrap();
+            await dispatch(fetchTodoData());
+            setAddModalOpen(false);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
 
