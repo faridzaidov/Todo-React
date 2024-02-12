@@ -1,25 +1,23 @@
 import { Button, Popconfirm, Table as T } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import AddModal from '../../../todoApp/modal/addModal'
-import EditModal from '../../../todoApp/modal/editModal';
-import { fetchTodoData, selectPosts, fetchDeleteTodo } from '../../../todoApp/store/posts';
+import { DeleteOutlined } from '@ant-design/icons';
+import { UsersData, selectPosts, UsersDelete } from '../../store/users';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import '../../../todoApp/style.scss';
 import { useSearchParams } from 'react-router-dom';
+import './style.scss';
+import AddUser from '../../modal/addUser';
+
 
 const Table = () => {
-    const [addModalOpen, setAddModalOpen] = useState(false);
-    const [editModalOpen, setEditModalOpen] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
     const current = Number(searchParams.get('page')) || 1;
     const limit = Number(searchParams.get('limit')) || 10;
 
     const dispatch = useDispatch();
-    const { posts = [], pagination, isGetting } = useSelector(selectPosts);
-
+    const { users = [], pagination, isGetting } = useSelector(selectPosts);
+    const [addUserOpen, setAddUserOpen] = useState(false);
     const handleDelete = (id) => {
-        dispatch(fetchDeleteTodo(id));
+        dispatch(UsersDelete(id));
     };
 
     const handlePageChange = (page, pageSize) => {
@@ -36,13 +34,13 @@ const Table = () => {
     };
 
     useEffect(() => {
-        dispatch(fetchTodoData({ page: current, limit: limit }));
+        dispatch(UsersData({ page: current, limit: limit }));
     }, [current, limit, dispatch]);
 
     return (
-        <div className='home-table'>
+        <div className='user-table'>
             <Button
-                onClick={() => setAddModalOpen(true)}
+                onClick={() => setAddUserOpen(true)}
                 type="primary"
                 style={{
                     marginBottom: 16,
@@ -56,7 +54,7 @@ const Table = () => {
                 bordered
                 rowKey='id'
                 loading={isGetting}
-                dataSource={posts}
+                dataSource={users}
                 scroll={{
                     x: 'max-content',
                 }}
@@ -73,33 +71,26 @@ const Table = () => {
                         editable: true,
                     },
                     {
-                        title: 'UserId',
-                        dataIndex: 'userId',
-                    },
-                    {
                         title: 'Name',
                         dataIndex: 'name',
                     },
 
                     {
-                        title: 'Surname',
-                        dataIndex: 'surname',
-                    },
-                    {
-                        title: 'Birthday',
-                        dataIndex: 'dateOfBirth',
-                    },
-                    {
-                        title: 'Age',
-                        dataIndex: 'age',
-                    },
-                    {
-                        title: 'Patronymic',
-                        dataIndex: 'patronymic',
+                        title: 'Username',
+                        dataIndex: 'username',
                     },
                     {
                         title: 'Picture',
                         dataIndex: 'picturePath',
+                        render: (value) => (
+                            <div style={{ width: 64, height: 64, borderRadius: '50%', overflow: 'hidden' }}>
+                                <img src={value} style={{ maxWidth: '100%' }} />
+                            </div>
+                        )
+                    },
+                    {
+                        title: 'Cover',
+                        dataIndex: 'coverPath',
                         render: (value) => (
                             <div style={{ width: 64, height: 64, borderRadius: '50%', overflow: 'hidden' }}>
                                 <img src={value} style={{ maxWidth: '100%' }} />
@@ -122,19 +113,16 @@ const Table = () => {
                         render: (_, record) => {
                             return (
                                 <>
-                                    <EditOutlined onClick={() => setEditModalOpen(record.id)} />
                                     <Popconfirm title="Delete?" onConfirm={() => handleDelete(record.id)}>
                                         <DeleteOutlined style={{ color: "red", marginLeft: 12 }} />
                                     </Popconfirm>
-
                                 </>
                             )
                         }
                     },
                 ]}
             />
-            <AddModal setAddModalOpen={setAddModalOpen} addModalOpen={addModalOpen} />
-            <EditModal editModalOpen={editModalOpen} setEditModalOpen={setEditModalOpen} />
+            <AddUser addUserOpen={addUserOpen} setAddUserOpen={setAddUserOpen} />
         </div>
     );
 };

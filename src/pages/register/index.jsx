@@ -2,19 +2,19 @@ import React from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { signIn, selectAuth } from './store/auth'
+import { signUp, selectAuth } from './store/auth'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import "./style.scss"
 
-const Login = () => {
+const Register = () => {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
     const { isLoadingLogin } = useSelector(selectAuth)
     const navigate = useNavigate()
 
     const onFinish = (values) => {
-        dispatch(signIn(values))
+        dispatch(signUp(values))
             .unwrap()
             .then(() =>
                 navigate('/'))
@@ -24,7 +24,18 @@ const Login = () => {
     return (
         <Form form={form} name="horizontal_login" layout="inline" onFinish={onFinish}>
             <div className='form'>
-                <h1>LOGIN</h1>
+                <h1>Register</h1>
+                <Form.Item
+                    name="name"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your name!',
+                        },
+                    ]}
+                >
+                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Name" className='fromInput' />
+                </Form.Item>
                 <Form.Item
                     name="username"
                     rules={[
@@ -52,6 +63,22 @@ const Login = () => {
                         className='fromInput'
                     />
                 </Form.Item>
+                <Form.Item
+                    name="passwordConfirmation"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your password!',
+                        },
+                    ]}
+                >
+                    <Input
+                        prefix={<LockOutlined className="site-form-item-icon" />}
+                        type="password"
+                        placeholder="password confirmation"
+                        className='fromInput'
+                    />
+                </Form.Item>
                 <Form.Item shouldUpdate
                     className='fromButton'
                 >
@@ -66,10 +93,10 @@ const Login = () => {
                         </Button>
                     )}
                 </Form.Item>
-                <a href="/register">Sign Up</a>
+
             </div>
         </Form>
     );
 }
 
-export default Login
+export default Register

@@ -67,7 +67,7 @@ const EditUser = ({ setUserEditOpen, userEditOpen }) => {
             <form id="form" onSubmit={handleSubmit(onSubmit)}>
                 <Flex vertical gap={16}>
                     <Flex gap={16} align="center">
-                        <Avatar src={user?.picturePath} size={128}>
+                        <Avatar src={user?.picturePath} size={128} style={{ zIndex: 4 }}>
                             {user?.name[0]}
                         </Avatar>
                         <Button

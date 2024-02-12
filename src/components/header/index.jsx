@@ -25,7 +25,7 @@ const Header = () => {
     },
     {
       icon: <UserOutlined />,
-      label: <a href="/myprofile">My Profile</a>,
+      label: <Link to="/myprofile">My Profile</Link>,
       key: '1',
     },
     {
@@ -36,9 +36,11 @@ const Header = () => {
   ];
   return (
     <div className="header">
-      <a href='/' style={{ textDecoration: "none" }}>
-        <h1>Todo App</h1>
-      </a>
+      <h1>Todo App</h1>
+      <div className='navbar'>
+        <Link to="/">Employes</Link>
+        <Link to="/users">Users</Link>
+      </div>
       <div>
         <Dropdown
           menu={{

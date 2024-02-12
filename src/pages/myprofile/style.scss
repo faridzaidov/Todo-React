@@ -7,10 +7,10 @@
       display: none;
       transform: translate(40%, 44%);
     }
-    .coverBackgroung {
+    .coverBackground {
       display: none;
     }
-    &:hover .coverBackgroung {
+    &:hover .coverBackground {
       content: "";
       position: absolute;
       width: 100%;
@@ -44,6 +44,9 @@
     position: absolute;
     bottom: 5px;
     left: 10%;
+    .ant-card-meta-avatar {
+      z-index: 99;
+    }
   }
 }
 .ant-dropdown {

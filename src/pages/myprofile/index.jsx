@@ -38,7 +38,7 @@ const MyProfile = () => {
               className='coverPicture'
               style={{ maxWidth: '100%', objectFit: 'cover' }}
             />
-            <div className='coverBackgroung'></div>
+            <div className='coverBackground'></div>
             <Button
               size="small"
               className='coverButton'
