@@ -3,3 +3,8 @@
     margin: 0;
     padding: 0;
 }
+
+.ant-spin-blur {
+    opacity: 1 !important;
+}
+

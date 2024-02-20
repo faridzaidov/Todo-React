@@ -1,7 +1,7 @@
-import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
+import { buildCreateSlice, asyncThunkCreator } from '@reduxjs/toolkit';
 
 const createAppSlice = buildCreateSlice({
-    creators: { asyncThunk: asyncThunkCreator },
+   creators: { asyncThunk: asyncThunkCreator },
 });
 
 export default createAppSlice;

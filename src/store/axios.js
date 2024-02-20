@@ -17,9 +17,11 @@ instanceApi.interceptors.request.use(config => {
 
 instanceApi.interceptors.response.use(
    config => {
-      config?.data?.message && notification.success({
-         message: config.data.message
-      });
+      config?.data?.message &&
+         notification.success({
+            message: config.data.message,
+            placement: 'bottomRight',
+         });
       return config;
    },
    async err => {
@@ -39,17 +41,18 @@ instanceApi.interceptors.response.use(
                window.store.dispatch({ type: 'logOut' });
                history.push('/login');
                notification.error({
-                  message: err.response.data?.message
+                  message: err.response.data?.message,
+                  placement: 'bottomRight',
                });
             }
          } else {
             notification.error({
-               message: err.response.data?.message || `${err.response.status}: ${err.response.statusText}`
+               message: err.response.data?.message || `${err.response.status}: ${err.response.statusText}`,
             });
          }
       } else {
          notification.error({
-            message: err.message
+            message: err.message,
          });
       }
 

@@ -1,32 +1,32 @@
-import { useEffect } from 'react';
+// import { getUserInfo, selectUser } from './store/user';
+// import { useSelector } from 'react-redux';
+import { Spin, Flex } from 'antd';
+import { useGetUserInfoQuery } from './store/user/userApi';
+// import { selectUser } from './store/user';
+// import { selectAuth } from './pages/login/store/auth';
 import Utils from './common/utils';
-import { useDispatch } from 'react-redux';
-import { getUserInfo, selectUser } from './store/user';
-import { useSelector } from 'react-redux';
-import { Spin } from 'antd';
-import { Flex } from 'antd';
 
 const Auth = ({ children }) => {
-    const dispatch = useDispatch();
-    const { isGetting, isLogged } = useSelector(selectUser);
+   // const dispatch = useDispatch();
+   const { isLoading: isLoadingUserInfo } = useGetUserInfoQuery(undefined, {
+      skip: !Utils.getAccessToken(),
+   });
+   console.log(useGetUserInfoQuery());
+   // useEffect(() => {
+   //     if (Utils.getAccessToken() && isLogged) {
+   //         dispatch(getUserInfo())
+   //     }
+   // }, [dispatch, isLogged]);
 
-    useEffect(() => {
-        if (Utils.getAccessToken()) {
-            dispatch(getUserInfo())
-        }
-    }, [dispatch, isLogged])
+   if (isLoadingUserInfo) {
+      return (
+         <Flex align='center' justify='center' style={{ height: '100vh' }}>
+            <Spin />
+         </Flex>
+      );
+   }
 
-    if (isGetting) {
-        return (
-            <Flex align='center' justify='center' style={{ height: '100vh' }}>
-                <Spin />
-            </Flex>
-        )
-    }
+   return <>{children}</>;
+};
 
-    return (
-        <>{children}</>
-    )
-}
-
-export default Auth
+export default Auth;
