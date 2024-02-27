@@ -1,11 +1,9 @@
 import emptySplitApi from '../../../store/empty-slice-api';
 import history from '../../../common/history';
 import Utils from '../../../common/utils';
-import { logOut } from '../../../store/user';
-import userApi from '../../../store/user/userApi';
+import { getUserInfo, logOut } from '../../../store/user';
 
-const tagType = 'Auth';
-const authApi = emptySplitApi.enhanceEndpoints({ addTagTypes: [tagType] }).injectEndpoints({
+const authApi = emptySplitApi.injectEndpoints({
    endpoints: build => ({
       signIn: build.mutation({
          query: ({ username, password }) => ({
@@ -16,9 +14,8 @@ const authApi = emptySplitApi.enhanceEndpoints({ addTagTypes: [tagType] }).injec
          async onQueryStarted(_, { dispatch, queryFulfilled }) {
             try {
                const { data } = await queryFulfilled;
-               Utils.setAccessToken(data.accessToken);
-               dispatch(userApi.endpoints.getUserInfo.initiate());
-               history.push('/');
+               // success
+               dispatch(getUserInfo(data.accessToken));
             } catch {
                console.log('error');
             }

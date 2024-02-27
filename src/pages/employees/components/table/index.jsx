@@ -118,7 +118,7 @@ const Table = () => {
                               <img alt='userName Photo' src={value} style={{ maxWidth: '100%' }} />
                            </div>
                         ) : (
-                           <img src='/img.png' className='tableUserIcon' />
+                           <img alt='default image' src='/img.png' className='tableUserIcon' />
                         )}
                      </div>
                   ),

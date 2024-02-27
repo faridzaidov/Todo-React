@@ -33,9 +33,10 @@ const Header = () => {
          {user && (
             <div className='navbar'>
                <NavLink to='/'>Employees</NavLink>
-               <NavLink to='/users'>Users</NavLink>
+               {user.role !== 'guest' ? <NavLink to='/users'>Users</NavLink> : null}
             </div>
          )}
+
          <div>
             {user ? (
                <Dropdown

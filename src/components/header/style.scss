@@ -7,20 +7,23 @@
   padding: 24px;
 }
 
+
 .user-dropdown {
   padding-top: 16px !important;
-  .ant-dropdown-menu {
     .ant-card {
       width: 250px !important;
       .ant-card-body {
         width: 250px;
+        .ant-card-meta {
+          flex-direction: column !important;
+          align-items: center !important;
+          .ant-card-meta-avatar{
+            padding-inline-end: 0;
+          }
+        }
       }
-    }
   }
-  .ant-card .ant-card-meta {
-    flex-direction: column !important;
-    align-items: center !important;
-  }
+
 }
 .navbar {
   display: flex;

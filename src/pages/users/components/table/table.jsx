@@ -5,6 +5,8 @@ import AddUser from '../../modal/addUser';
 import './style.scss';
 import { useGetUsersQuery, useDeleteUserMutation } from '../../store/usersApi';
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../../store/user/index.js';
 const Table = () => {
    const [addUserOpen, setAddUserOpen] = useState(false);
    const { data: users = [], isLoading: isLoadingGetUsers } = useGetUsersQuery();
@@ -18,7 +20,7 @@ const Table = () => {
             console.error('Failed to delete user:', error);
          });
    };
-
+   const { user } = useSelector(selectUser);
    return (
       <div className='user-table'>
          <Button
@@ -56,19 +58,14 @@ const Table = () => {
                   dataIndex: 'username',
                },
                {
+                  title: 'Role',
+                  dataIndex: 'role',
+               },
+               {
                   title: 'Picture',
                   dataIndex: 'picturePath',
                   render: value => (
                      <div style={{ width: 64, height: 64, borderRadius: '50%', overflow: 'hidden' }}>
-                        <img alt={value} src={value} style={{ maxWidth: '100%' }} />
-                     </div>
-                  ),
-               },
-               {
-                  title: 'Cover',
-                  dataIndex: 'coverPath',
-                  render: value => (
-                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                         {value ? (
                            <div style={{ width: 64, height: 64, borderRadius: '50%', overflow: 'hidden' }}>
                               <img alt={value} src={value} style={{ maxWidth: '100%' }} />
@@ -80,19 +77,36 @@ const Table = () => {
                   ),
                },
                {
+                  title: 'Cover',
+                  dataIndex: 'coverPath',
+                  render: value => (
+                     <div
+                        style={{
+                           width: 64,
+                           height: 64,
+                           display: 'flex',
+                           justifyContent: 'center',
+                        }}
+                     >
+                        <img alt={value} src={value} style={{ maxWidth: '100%' }} />
+                     </div>
+                  ),
+               },
+               {
                   title: 'Created',
                   dataIndex: 'createdAt',
                   render: createdAt => dayjs(createdAt).format('DD.MM.YYYY / HH:mm'),
                },
                {
-                  title: 'operation',
                   dataIndex: 'operation',
                   fixed: 'right',
                   render: (_, record) => {
                      return (
                         <>
                            <Popconfirm title='Delete?' onConfirm={() => handleDelete(record.id)}>
-                              <DeleteOutlined style={{ color: 'red', marginLeft: 12 }} />
+                              {record.id === user.id ? null : (
+                                 <DeleteOutlined style={{ color: 'red', marginLeft: 12 }} />
+                              )}
                            </Popconfirm>
                         </>
                      );

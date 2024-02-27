@@ -1,4 +1,4 @@
-import Table from './components/table';
+import Table from './components/table/index.jsx';
 import './style.scss';
 
 const TodoApp = () => {

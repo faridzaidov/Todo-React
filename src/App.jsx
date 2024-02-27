@@ -7,6 +7,7 @@ import UserOnline from './pages/login/components/useronline';
 import MyProfile from './pages/myprofile';
 import Register from './pages/register';
 import User from './pages/users';
+import UserGuest from './pages/login/components/userGuest.jsx';
 
 function App() {
    return (
@@ -25,7 +26,9 @@ function App() {
                path='/users'
                element={
                   <UserOnline>
-                     <User />
+                     <UserGuest>
+                        <User />
+                     </UserGuest>
                   </UserOnline>
                }
             />

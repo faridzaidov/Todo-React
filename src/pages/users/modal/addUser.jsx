@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, Input } from 'antd';
+import { Modal, Input, Select } from 'antd';
 // import { UserAdd, UsersData, selectPosts } from '../store/users';
 import { useAddUserMutation } from '../store/usersApi';
 import '../style.scss';
@@ -8,6 +8,7 @@ const initialState = {
    username: '',
    password: '',
    passwordConfirmation: '',
+   role: '',
 };
 
 const AddUser = ({ addUserOpen, setAddUserOpen }) => {
@@ -19,6 +20,10 @@ const AddUser = ({ addUserOpen, setAddUserOpen }) => {
    const handleInputChange = e => {
       const { name, value } = e.target;
       setFormData(prevData => ({ ...prevData, [name]: value }));
+   };
+
+   const handleChange = value => {
+      setFormData(prevData => ({ ...prevData, role: value }));
    };
 
    const handleAdd = async () => {
@@ -75,27 +80,26 @@ const AddUser = ({ addUserOpen, setAddUserOpen }) => {
                />
             </label>
             <br />
-            {/*<Select*/}
-            {/*   defaultValue='lucy'*/}
-            {/*   loading={false}*/}
-            {/*   style={{*/}
-            {/*      width: 120,*/}
-            {/*   }}*/}
-            {/*   options={[*/}
-            {/*      {*/}
-            {/*         value: 'Super Admin',*/}
-            {/*         label: 'Super Admin',*/}
-            {/*      },*/}
-            {/*      {*/}
-            {/*         value: 'Admin',*/}
-            {/*         label: 'Admin',*/}
-            {/*      },*/}
-            {/*      {*/}
-            {/*         value: 'Guest',*/}
-            {/*         label: 'Guest',*/}
-            {/*      },*/}
-            {/*   ]}*/}
-            {/*/>*/}
+            <Select
+               defaultValue='Role'
+               loading={false}
+               style={{
+                  borderColor: 'gray',
+                  marginTop: 9,
+                  width: '100%',
+               }}
+               onChange={handleChange}
+               options={[
+                  {
+                     value: 'admin',
+                     label: 'admin',
+                  },
+                  {
+                     value: 'guest',
+                     label: 'guest',
+                  },
+               ]}
+            />
             <br />
          </form>
       </Modal>

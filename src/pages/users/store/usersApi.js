@@ -31,4 +31,4 @@ const usersApi = emptySplitApi.enhanceEndpoints({ addTagTypes: [tagType] }).inje
    overrideExisting: false,
 });
 
-export const { useDeleteUserMutation, useAddUserMutation, useGetUsersQuery } = usersApi;
+export const { useDeleteUserMutation, useAddUserMutation, useGetUsersQuery, user } = usersApi;

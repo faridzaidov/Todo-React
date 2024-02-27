@@ -1,4 +1,4 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { EyeInvisibleOutlined, EyeTwoTone, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import './style.scss';
 import { useSignInMutation } from './store/authApi';
@@ -40,11 +40,12 @@ const Login = () => {
                   },
                ]}
             >
-               <Input
+               <Input.Password
                   prefix={<LockOutlined className='site-form-item-icon' />}
                   type='password'
                   placeholder='Password'
                   className='fromInput'
+                  iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                />
             </Form.Item>
             <Form.Item shouldUpdate className='fromButton'>

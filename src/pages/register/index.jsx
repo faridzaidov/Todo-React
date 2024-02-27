@@ -1,4 +1,4 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { EyeInvisibleOutlined, EyeTwoTone, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import './style.scss';
 import { Link } from 'react-router-dom';
@@ -55,11 +55,12 @@ const Register = () => {
                   },
                ]}
             >
-               <Input
+               <Input.Password
                   prefix={<LockOutlined className='site-form-item-icon' />}
                   type='password'
                   placeholder='Password'
                   className='fromInput'
+                  iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                />
             </Form.Item>
             <Form.Item
@@ -71,11 +72,12 @@ const Register = () => {
                   },
                ]}
             >
-               <Input
+               <Input.Password
                   prefix={<LockOutlined className='site-form-item-icon' />}
                   type='password'
                   placeholder='password confirmation'
                   className='fromInput'
+                  iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                />
             </Form.Item>
             <Form.Item shouldUpdate className='fromButton'>
