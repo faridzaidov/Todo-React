@@ -7,7 +7,6 @@ import { useSignUpMutation } from './store/authApi';
 const Register = () => {
    const [form] = Form.useForm();
    const [signUp, { Loading: isLoadingSingUp }] = useSignUpMutation();
-
    const onFinish = values => {
       signUp(values);
    };

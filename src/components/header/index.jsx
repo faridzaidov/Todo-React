@@ -10,7 +10,6 @@ const Header = () => {
    const { user } = useSelector(selectUser);
    const [signOut] = useUserSignOutMutation();
    const { Meta } = Card;
-
    const items = [
       {
          type: 'divider',
@@ -26,6 +25,7 @@ const Header = () => {
          key: '3',
       },
    ];
+   console.log(items);
 
    return (
       <div className='header'>

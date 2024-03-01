@@ -2,6 +2,7 @@ import createSlice from '../buildCreateSlice';
 import axios from '../../store/axios';
 import Utils from '../../common/utils.js';
 import history from '../../common/history.js';
+import { serialize } from 'object-to-formdata';
 
 const initialState = {
    user: null,
@@ -61,57 +62,57 @@ const userSlice = createSlice({
             },
          },
       ),
-      // updateUser: create.asyncThunk(
-      //    async body => {
-      //       await axios.put(`/user/update`, body);
-      //       return body;
-      //    },
-      //    {
-      //       pending: state => {
-      //          state.isUpdating = true;
-      //       },
-      //       fulfilled: (state, action) => {
-      //          state.user.name = action.payload.name;
-      //       },
-      //       settled: state => {
-      //          state.isUpdating = false;
-      //       },
-      //    },
-      // ),
-      // updateUserPhoto: create.asyncThunk(
-      //    async body => {
-      //       await axios.patch('/user/picture', serialize(body));
-      //       return body;
-      //    },
-      //    {
-      //       pending: state => {
-      //          state.isCreating = true;
-      //       },
-      //       fulfilled: (state, action) => {
-      //          state.user.picturePath = URL.createObjectURL(action.payload.picture);
-      //       },
-      //       settled: state => {
-      //          state.isCreating = false;
-      //       },
-      //    },
-      // ),
-      // updateCoverPhoto: create.asyncThunk(
-      //    async body => {
-      //       await axios.patch('/user/cover', serialize(body));
-      //       return body;
-      //    },
-      //    {
-      //       pending: state => {
-      //          state.isCreating = true;
-      //       },
-      //       fulfilled: (state, action) => {
-      //          state.user.coverPath = URL.createObjectURL(action.payload.picture);
-      //       },
-      //       settled: state => {
-      //          state.isCreating = false;
-      //       },
-      //    },
-      // ),
+      updateUser: create.asyncThunk(
+         async body => {
+            await axios.put(`/user/update`, body);
+            return body;
+         },
+         {
+            pending: state => {
+               state.isUpdating = true;
+            },
+            fulfilled: (state, action) => {
+               state.user.name = action.payload.name;
+            },
+            settled: state => {
+               state.isUpdating = false;
+            },
+         },
+      ),
+      updateUserPhoto: create.asyncThunk(
+         async body => {
+            await axios.patch('/user/picture', serialize(body));
+            return body;
+         },
+         {
+            pending: state => {
+               state.isCreating = true;
+            },
+            fulfilled: (state, action) => {
+               state.user.picturePath = URL.createObjectURL(action.payload.picture);
+            },
+            settled: state => {
+               state.isCreating = false;
+            },
+         },
+      ),
+      updateCoverPhoto: create.asyncThunk(
+         async body => {
+            await axios.patch('/user/cover', serialize(body));
+            return body;
+         },
+         {
+            pending: state => {
+               state.isCreating = true;
+            },
+            fulfilled: (state, action) => {
+               state.user.coverPath = URL.createObjectURL(action.payload.picture);
+            },
+            settled: state => {
+               state.isCreating = false;
+            },
+         },
+      ),
    }),
 });
 
